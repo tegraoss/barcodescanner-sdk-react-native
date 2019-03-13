@@ -147,8 +147,8 @@ fun ReadableArray.toJson(): JSONArray {
             ReadableType.Boolean -> jsonArray.put(this.getBoolean(i))
             ReadableType.Number -> jsonArray.put(this.getDouble(i))
             ReadableType.String -> jsonArray.put(this.getString(i))
-            ReadableType.Map -> jsonArray.put(this.getMap(i).toJson())
-            ReadableType.Array -> jsonArray.put(this.getArray(i).toJson())
+            ReadableType.Map -> jsonArray.put(this.getMap(i)?.toJson())
+            ReadableType.Array -> jsonArray.put(this.getArray(i)?.toJson())
             else -> {}
         }
     }
@@ -168,8 +168,8 @@ fun ReadableMap.toJson(): JSONObject {
             ReadableType.Boolean -> jsonObject.put(key, this.getBoolean(key))
             ReadableType.Number -> jsonObject.put(key, this.getDouble(key))
             ReadableType.String -> jsonObject.put(key, this.getString(key))
-            ReadableType.Map -> jsonObject.put(key, this.getMap(key).toJson())
-            ReadableType.Array -> jsonObject.put(key, this.getArray(key).toJson())
+            ReadableType.Map -> jsonObject.put(key, this.getMap(key)?.toJson())
+            ReadableType.Array -> jsonObject.put(key, this.getArray(key)?.toJson())
             else -> {}
         }
     }
