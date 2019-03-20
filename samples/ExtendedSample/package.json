@@ -1,26 +1,27 @@
 {
-	"name": "ExtendedSample",
-	"version": "5.11.0BETA1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"preinstall": "../sample_install.sh",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"dependencies": {
-		"react": "16.5.0",
-		"react-native": "0.57.1",
-		"prop-types": "15.6.2",
-		"react-native-iphone-x-helper": "^1.0.2",
-		"scandit-react-native": "file:../../",
-		"react-native-simple-events": "1.0.1",
-		"react-navigation": "1.5.8",
-		"react-navigation-is-focused-hoc": "^1.1.1"
-	},
-	"devDependencies": {
-		"metro": "^0.45.6",
-		"metro-core": "^0.45.6",
-		"metro-react-native-babel-preset": "^0.45.6",
-		"react-test-renderer": "16.5.0"
-	}
+    "name": "ExtendedSample",
+    "version": "5.11.0BETA1",
+    "private": true,
+    "scripts": {
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "preinstall": "../sample_install.sh",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "react": "16.8.3",
+        "react-native": "0.59.1",
+        "prop-types": "15.6.2",
+        "react-native-iphone-x-helper": "^1.0.2",
+        "scandit-react-native": "file:../../",
+        "react-native-simple-events": "1.0.1",
+        "react-navigation": "1.5.8",
+        "react-navigation-is-focused-hoc": "^1.1.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.3.4",
+        "metro": "^0.45.6",
+        "metro-core": "^0.45.6",
+        "metro-react-native-babel-preset": "^0.45.6",
+        "react-test-renderer": "16.8.3"
+    }
 }

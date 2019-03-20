@@ -5,7 +5,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.scandit.barcodepicker.ScanditLicense
 
-class ScanditModule(reactContext: ReactApplicationContext?) : ReactContextBaseJavaModule(reactContext)  {
+class ScanditModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext)  {
 
     override fun getName(): String = "ScanditModule"
 

@@ -9,13 +9,13 @@ import kotlin.collections.ArrayList
 
 class ScanditPackage : ReactPackage {
 
-    override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
+    override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
         val modules = ArrayList<NativeModule>()
         modules.add(ScanditModule(reactContext))
         return modules
     }
 
-    override fun createViewManagers(reactContext: ReactApplicationContext?): MutableList<SimpleViewManager<View>> {
+    override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<SimpleViewManager<View>> {
         val managers = ArrayList<SimpleViewManager<View>>()
         managers.add(BarcodePicker() as SimpleViewManager<View>)
         return managers
