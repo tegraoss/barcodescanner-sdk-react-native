@@ -104,13 +104,13 @@ export default class MatrixScanSample extends Component {
   render() {
     return (
       <View style={{
-			flex: 1,
-			flexDirection: 'column'}}>
-			<BarcodePicker
-				onRecognizeNewCodes={(session) => { this.onRecognizeNewCodes(session) }}
-				scanSettings= { this.settings }
+            flex: 1,
+            flexDirection: 'column'}}>
+            <BarcodePicker
+                onRecognizeNewCodes={(session) => { this.onRecognizeNewCodes(session) }}
+                scanSettings= { this.settings }
         ref={(scan) => { this.scanner = scan }}
-				style={{ flex: 1 }}/>
+                style={{ flex: 1 }}/>
     </View>
     );
   }
