@@ -58,12 +58,12 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
         return map
     }
 
-    override fun receiveCommand(root: BarcodePicker?, commandId: Int, args: ReadableArray?) {
+    override fun receiveCommand(root: BarcodePicker, commandId: Int, args: ReadableArray?) {
         when (commandId) {
-            COMMAND_START_SCANNING -> root?.startScanning()
-            COMMAND_STOP_SCANNING -> root?.stopScanning()
-            COMMAND_RESUME_SCANNING -> root?.resumeScanning()
-            COMMAND_PAUSE_SCANNING -> root?.pauseScanning()
+            COMMAND_START_SCANNING -> root.startScanning()
+            COMMAND_STOP_SCANNING -> root.stopScanning()
+            COMMAND_RESUME_SCANNING -> root.resumeScanning()
+            COMMAND_PAUSE_SCANNING -> root.pauseScanning()
             COMMAND_APPLY_SETTINGS -> setScanSettings(args)
             COMMAND_VIEWFINDER_DIMENSION -> setViewfinderDimension(args)
             COMMAND_TORCH_ENABLED -> setTorchEnabled(args)
@@ -83,7 +83,7 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
         }
     }
 
-    override fun createViewInstance(reactContext: ThemedReactContext?): BarcodePicker {
+    override fun createViewInstance(reactContext: ThemedReactContext): BarcodePicker {
         picker = BarcodePicker(reactContext, ScanSettings.create())
         picker?.setOnScanListener(this)
         picker?.setTextRecognitionListener(this)
