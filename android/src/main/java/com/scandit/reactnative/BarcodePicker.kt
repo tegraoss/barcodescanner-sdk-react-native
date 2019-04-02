@@ -41,6 +41,7 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
         map.put("pauseScanning", COMMAND_PAUSE_SCANNING)
         map.put("applySettings", COMMAND_APPLY_SETTINGS)
         map.put("setViewfinderDimension", COMMAND_VIEWFINDER_DIMENSION)
+        map.put("switchTorchOn", COMMAND_SWITCH_TORCH_ON)
         map.put("setTorchEnabled", COMMAND_TORCH_ENABLED)
         map.put("setVibrateEnabled", COMMAND_VIBRATE_ENABLED)
         map.put("setBeepEnabled", COMMAND_BEEP_ENABLED)
@@ -66,6 +67,7 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
             COMMAND_PAUSE_SCANNING -> root.pauseScanning()
             COMMAND_APPLY_SETTINGS -> setScanSettings(args)
             COMMAND_VIEWFINDER_DIMENSION -> setViewfinderDimension(args)
+            COMMAND_SWITCH_TORCH_ON -> switchTorchOn(args)
             COMMAND_TORCH_ENABLED -> setTorchEnabled(args)
             COMMAND_VIBRATE_ENABLED -> setVibrateEnabled(args)
             COMMAND_BEEP_ENABLED -> setBeepEnabled(args)
@@ -269,6 +271,10 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
                 args?.getDouble(0)?.toFloat() ?: 1f, args?.getDouble(1)?.toFloat() ?: 1f,
                 args?.getDouble(2)?.toFloat() ?: 1f, args?.getDouble(3)?.toFloat() ?: 1f
         )
+    }
+    
+    private fun switchTorchOn(args: ReadableArray?) {
+        picker?.switchTorchOn(args?.getBoolean(0) ?: false)
     }
 
     private fun setTorchEnabled(args: ReadableArray?) {

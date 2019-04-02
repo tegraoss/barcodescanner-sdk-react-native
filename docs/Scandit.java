@@ -384,6 +384,16 @@ public class Scandit {
     *
     */
     public void setMatrixScanHighlightingColor(int state, Object color);
+    
+    /**
+    * Switches the torch (if available) on or off programmatically
+    * This method should only be called after scanning has been started. Otherwise, it will have no effect.
+    * There is also a {@link BarcodePicker.setTorchEnabled method} to add a torch icon that the user can click to activate the torch.
+    *
+    * @param on true when the torch should be switched on, false if the torch should be turned off.
+    *
+    */
+    public void switchTorchOn(boolean on);
 
     /** @name Sound Configuration
     *  Customize the scan sound.
