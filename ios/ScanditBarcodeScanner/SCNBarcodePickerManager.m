@@ -132,6 +132,19 @@ RCT_EXPORT_METHOD(setTorchEnabled:(nonnull NSNumber *)reactTag
      }];
 }
 
+RCT_EXPORT_METHOD(switchTorchOn:(nonnull NSNumber *)reactTag
+                  enabled:(BOOL)enabled) {
+    [self.bridge.uiManager addUIBlock:
+     ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+         id view = viewRegistry[reactTag];
+         if (![view isKindOfClass:[SCNBarcodePicker class]]) {
+             RCTLogError(@"Invalid view returned from registry, expecting SCNBarcodePicker, got: %@", view);
+         } else {
+             [((SCNBarcodePicker *)view).picker switchTorchOn:enabled];
+         }
+     }];
+}
+
 RCT_EXPORT_METHOD(setVibrateEnabled:(nonnull NSNumber *)reactTag
                   enabled:(BOOL)enabled) {
     [self.bridge.uiManager addUIBlock:
