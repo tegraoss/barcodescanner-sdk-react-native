@@ -132,6 +132,10 @@ export class BarcodePicker extends React.Component {
     setVibrateEnabled(isEnabled) {
         this.dispatcher.setVibrateEnabled(isEnabled);
     }
+    
+    switchTorchOn(on) {
+        this.dispatcher.switchTorchOn(on);
+    }
 
     setTorchEnabled(isEnabled) {
         this.dispatcher.setTorchEnabled(isEnabled);
