@@ -60,6 +60,12 @@ export class CommandDispatcher {
       UIManager.getViewManagerConfig('BarcodePicker').Commands.setVibrateEnabled, [isEnabled]);
   }
 
+  switchTorchOn(on) {
+    UIManager.dispatchViewManagerCommand(
+      this.pickerViewHandle,
+      UIManager.getViewManagerConfig('BarcodePicker').Commands.switchTorchOn, [on]);
+  }
+
   setTorchEnabled(isEnabled) {
     UIManager.dispatchViewManagerCommand(
       this.pickerViewHandle,
