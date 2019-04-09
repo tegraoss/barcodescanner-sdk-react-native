@@ -22,9 +22,7 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      // If you want the Scandit BarcodePicker to use Android Camera API 2, change the only argument
-      // of ScanditPackage constructor to 2.
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new ScanditPackage(1));
+      return Arrays.asList(new MainReactPackage(), new ScanditPackage());
     }
   };
 
