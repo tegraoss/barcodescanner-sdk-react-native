@@ -19,7 +19,10 @@ import java.util.concurrent.CountDownLatch
 import java.util.HashSet
 
 
-class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRecognitionListener, ProcessFrameListener, WarningsListener {
+class BarcodePicker(
+    val cameraApi: Int = 1
+) : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRecognitionListener,
+        ProcessFrameListener, WarningsListener {
 
     private var picker: BarcodePicker? = null
     private var didScanLatch: CountDownLatch = CountDownLatch(1)
@@ -86,7 +89,11 @@ class BarcodePicker : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRe
     }
 
     override fun createViewInstance(reactContext: ThemedReactContext): BarcodePicker {
-        picker = BarcodePicker(reactContext, ScanSettings.create())
+        var scanSettings = ScanSettings.create()
+        if (cameraApi == 2) {
+            scanSettings.setProperty("enable_camera2_api", 1)
+        }
+        picker = BarcodePicker(reactContext, scanSettings)
         picker?.setOnScanListener(this)
         picker?.setTextRecognitionListener(this)
         picker?.setProcessFrameListener(this)
