@@ -331,7 +331,7 @@ public class Scandit {
      *  The onPropertyChanged method is executed whenever the state of the barcode picker changes.
      *  Events that can invoke this method include changes to the torch, camera facing, recognition
      *  mode and relative zoom.
-     *  The onPropertyChanged should accept to arguments of type int. The first one defines
+     *  The onPropertyChanged should accept two arguments of type int. The first one defines
      *  which property of the BarcodePicker has been changed and its value is one of
      *  {@link ChangedProperty} enum values. The second one, on the other hand, represents the new
      *  state of that property.
