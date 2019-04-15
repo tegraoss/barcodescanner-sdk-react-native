@@ -24,6 +24,7 @@ var iface = {
         onSettingsApplied: PropTypes.func,
         onTextRecognized: PropTypes.func,
         onWarnings: PropTypes.func,
+        onPropertyChanged: PropTypes.func,
         ...View.propTypes
   }
 };
@@ -40,6 +41,7 @@ export class BarcodePicker extends React.Component {
         this.onSettingsApplied = this.onSettingsApplied.bind(this);
         this.onTextRecognized = this.onTextRecognized.bind(this);
         this.onWarnings = this.onWarnings.bind(this);
+        this.onPropertyChanged = this.onPropertyChanged.bind(this);
     }
 
     componentDidMount() {
@@ -93,6 +95,13 @@ export class BarcodePicker extends React.Component {
         this.props.onWarnings(event.nativeEvent);
     }
 
+    onPropertyChanged(event: Event) {
+        if (!this.props.onPropertyChanged) {
+            return
+        }
+        this.props.onPropertyChanged(event.nativeEvent);
+    }
+
     render() {
         return <ReactBarcodePicker
             {...this.props}
@@ -102,6 +111,7 @@ export class BarcodePicker extends React.Component {
             onSettingsApplied = {this.onSettingsApplied}
             onTextRecognized = {this.onTextRecognized}
             onWarnings = {this.onWarnings}
+            onPropertyChanged = {this.onPropertyChanged}
             ref = {(scan) => {this.reference = scan}} />;
     }
 
@@ -186,4 +196,11 @@ export class BarcodePicker extends React.Component {
 BarcodePicker.Warning = {
     TOO_MUCH_GLARE_WARNING: 3,
     NOT_ENOUGH_CONTRAST_WARNING: 4
+}
+
+BarcodePicker.ChangedProperty {
+    TORCH: 0,
+    SWITCH_CAMERA: 1,
+    RECOGNITION_MODE: 2,
+    RELATIVE_ZOOM: 3
 }
