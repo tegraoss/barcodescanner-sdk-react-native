@@ -99,7 +99,7 @@ export class BarcodePicker extends React.Component {
         if (!this.props.onPropertyChanged) {
             return
         }
-        this.props.onPropertyChanged(event.nativeEvent);
+        this.props.onPropertyChanged(event.nativeEvent.name, event.nativeEvent.newState);
     }
 
     render() {
@@ -198,7 +198,7 @@ BarcodePicker.Warning = {
     NOT_ENOUGH_CONTRAST_WARNING: 4
 }
 
-BarcodePicker.ChangedProperty {
+BarcodePicker.ChangedProperty = {
     TORCH: 0,
     SWITCH_CAMERA: 1,
     RECOGNITION_MODE: 2,

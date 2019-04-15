@@ -98,6 +98,7 @@ class BarcodePicker(
         picker?.setTextRecognitionListener(this)
         picker?.setProcessFrameListener(this)
         picker?.addWarningsListener(this)
+        picker?.setPropertyChangeListener(this)
         return picker as BarcodePicker
     }
 
