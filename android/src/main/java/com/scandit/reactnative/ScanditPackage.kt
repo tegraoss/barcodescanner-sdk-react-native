@@ -7,17 +7,21 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.SimpleViewManager
 import kotlin.collections.ArrayList
 
-class ScanditPackage(val cameraApi: Int = 1) : ReactPackage {
+class ScanditPackage() : ReactPackage {
+
+    private val cameraApiSetting = CameraApiSetting()
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
         val modules = ArrayList<NativeModule>()
-        modules.add(ScanditModule(reactContext))
+        modules.add(ScanditModule(reactContext, cameraApiSetting))
         return modules
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<SimpleViewManager<View>> {
         val managers = ArrayList<SimpleViewManager<View>>()
-        managers.add(BarcodePicker(cameraApi) as SimpleViewManager<View>)
+        managers.add(BarcodePicker(cameraApiSetting) as SimpleViewManager<View>)
         return managers
     }
 }
+
+data class CameraApiSetting(var cameraApi: Int = 1)
