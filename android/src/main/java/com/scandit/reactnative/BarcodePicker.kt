@@ -20,7 +20,7 @@ import java.util.HashSet
 
 
 class BarcodePicker(
-    val cameraApi: Int = 1
+    val cameraApiSetting: CameraApiSetting
 ) : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRecognitionListener,
         ProcessFrameListener, WarningsListener, PropertyChangeListener {
 
@@ -90,7 +90,7 @@ class BarcodePicker(
 
     override fun createViewInstance(reactContext: ThemedReactContext): BarcodePicker {
         var scanSettings = ScanSettings.create()
-        if (cameraApi == 2) {
+        if (cameraApiSetting.cameraApi == 2) {
             scanSettings.setProperty("enable_camera2_api", 1)
         }
         picker = BarcodePicker(reactContext, scanSettings)
