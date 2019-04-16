@@ -190,7 +190,6 @@ export class BarcodePicker extends React.Component {
     setGuiStyle(style) {
         this.dispatcher.setGuiStyle(style);
     }
-
 }
 
 BarcodePicker.Warning = {
@@ -199,8 +198,8 @@ BarcodePicker.Warning = {
 }
 
 BarcodePicker.ChangedProperty = {
-    TORCH: 0,
-    SWITCH_CAMERA: 1,
-    RECOGNITION_MODE: 2,
-    RELATIVE_ZOOM: 3
+    TORCH: 'torchOn',
+    SWITCH_CAMERA: 'switchCamera',
+    RECOGNITION_MODE: 'recognitionMode',
+    RELATIVE_ZOOM: 'relativeZoom'
 }
