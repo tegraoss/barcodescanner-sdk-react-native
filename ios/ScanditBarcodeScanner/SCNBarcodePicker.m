@@ -12,13 +12,6 @@
 
 @import ScanditBarcodeScanner;
 
-typedef NS_ENUM(NSUInteger, SCNPropertyChanged) {
-    SCNPropertyChangedTorch = 0,
-    SCNPropertyChangedSwitchCamera = 1,
-    SCNPropertyChangedRecognitionMode = 2,
-    SCNPropertyChangedRelativeZoom = 3
-};
-
 static inline NSDictionary<NSString *, id> *dictionaryFromQuadrilateral(SBSQuadrilateral quadrilateral) {
     return @{
              @"topLeft": @[@(quadrilateral.topLeft.x), @(quadrilateral.topLeft.y)],
@@ -364,20 +357,20 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
         } else if (number.unsignedIntegerValue == 2) { // torch off
             number = @(1);
         }
-        NSDictionary *result = @{@"name": @(SCNPropertyChangedTorch), @"newState": number};
+        NSDictionary *result = @{@"name": property, @"newState": number};
         self.onPropertyChanged(result);
     } else if ([property isEqualToString:@"relativeZoom"]) {
         number = @(number.floatValue * 1000);
-        NSDictionary *result = @{@"name": @(SCNPropertyChangedRelativeZoom), @"newState": number};
+        NSDictionary *result = @{@"name": property, @"newState": number};
         self.onPropertyChanged(result);
     } else if ([property isEqualToString:@"switchCamera"]) {
-        NSDictionary *result = @{@"name": @(SCNPropertyChangedSwitchCamera), @"newState": number};
+        NSDictionary *result = @{@"name": property, @"newState": number};
         self.onPropertyChanged(result);
     } else if ([property isEqualToString:@"recognitionMode"]) {
         if (number.unsignedIntegerValue == 4) { // text and barcodes
             number = @(3);
         }
-        NSDictionary *result = @{@"name": @(SCNPropertyChangedRecognitionMode), @"newState": number};
+        NSDictionary *result = @{@"name": property, @"newState": number};
         self.onPropertyChanged(result);
     }
 }
