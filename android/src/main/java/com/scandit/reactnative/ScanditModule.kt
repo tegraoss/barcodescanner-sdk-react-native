@@ -18,7 +18,7 @@ class ScanditModule(
     }
 
     @ReactMethod
-    fun setCameraApi(newCameraApi: Int) {
-        cameraApiSetting.cameraApi = newCameraApi
+    fun setCameraApi(cameraApi: Int) {
+        cameraApiSetting.cameraApi = cameraApi
     }
 }
