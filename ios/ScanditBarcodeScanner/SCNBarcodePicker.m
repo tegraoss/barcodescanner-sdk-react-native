@@ -162,7 +162,7 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
     return [@"data:image/png;base64," stringByAppendingString:base64String];
 }
 
-@interface SCNBarcodePicker () <SBSScanDelegate, SBSProcessFrameDelegate, SBSWarningsObserver>
+@interface SCNBarcodePicker () <SBSScanDelegate, SBSProcessFrameDelegate, SBSWarningsObserver, SBSPropertyObserver>
 
 @property (nonatomic) BOOL shouldStop;
 @property (nonatomic) BOOL shouldPause;
@@ -188,6 +188,7 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
         _picker.scanDelegate = self;
         _picker.processFrameDelegate = self;
         [_picker addWarningsObserver:self];
+        [_picker addPropertyObserver:self];
         _didScanSemaphore = dispatch_semaphore_create(0);
         _didProcessFrameSemaphore = dispatch_semaphore_create(0);
         [self addSubview:_picker.view];
@@ -339,6 +340,17 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
         [result addObject:@4];
     }
     self.onWarnings(@{@"warnings": result});
+}
+
+#pragma mark - SBSPropertyObserver
+
+- (void)barcodePicker:(SBSBarcodePicker *)barcodePicker
+             property:(NSString *)property
+       changedToValue:(NSObject *)value {
+    if ([value isKindOfClass:[NSNumber class]]) {
+        NSDictionary *result = @{@"name": property, @"newState": value};
+        self.onPropertyChanged(result);
+    }
 }
 
 @end
