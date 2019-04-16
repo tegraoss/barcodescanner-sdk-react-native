@@ -37,6 +37,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBarcodeFrameAvailable, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onTextRecognized, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSettingsApplied, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onWarnings, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPropertyChanged, RCTBubblingEventBlock)
 
 RCT_EXPORT_METHOD(startScanning:(nonnull NSNumber *)reactTag) {
     [self.bridge.uiManager addUIBlock:

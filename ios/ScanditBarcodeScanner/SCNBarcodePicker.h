@@ -23,6 +23,7 @@
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onTextRecognized;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onSettingsApplied;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onWarnings;
+@property (nonatomic, copy, nullable) RCTBubblingEventBlock onPropertyChanged;
 
 - (void)finishOnScanCallbackShouldStop:(BOOL)shouldStop
                            shouldPause:(BOOL)shouldPause

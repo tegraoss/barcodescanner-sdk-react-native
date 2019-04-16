@@ -162,7 +162,7 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
     return [@"data:image/png;base64," stringByAppendingString:base64String];
 }
 
-@interface SCNBarcodePicker () <SBSScanDelegate, SBSProcessFrameDelegate, SBSWarningsObserver>
+@interface SCNBarcodePicker () <SBSScanDelegate, SBSProcessFrameDelegate, SBSWarningsObserver, SBSPropertyObserver>
 
 @property (nonatomic) BOOL shouldStop;
 @property (nonatomic) BOOL shouldPause;
@@ -188,6 +188,7 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
         _picker.scanDelegate = self;
         _picker.processFrameDelegate = self;
         [_picker addWarningsObserver:self];
+        [_picker addPropertyObserver:self];
         _didScanSemaphore = dispatch_semaphore_create(0);
         _didProcessFrameSemaphore = dispatch_semaphore_create(0);
         [self addSubview:_picker.view];
@@ -339,6 +340,39 @@ static inline NSString *base64StringFromFrame(CMSampleBufferRef *frame) {
         [result addObject:@4];
     }
     self.onWarnings(@{@"warnings": result});
+}
+
+#pragma mark - SBSPropertyObserver
+
+- (void)barcodePicker:(SBSBarcodePicker *)barcodePicker
+             property:(NSString *)property
+       changedToValue:(NSObject *)value {
+    if (![value isKindOfClass:[NSNumber class]]) {
+        return;
+    }
+    NSNumber *number = (NSNumber *)value;
+    if ([property isEqualToString:@"torchOn"]) {
+        if (number.unsignedIntegerValue == 1) { // torch on
+            number = @(2);
+        } else if (number.unsignedIntegerValue == 2) { // torch off
+            number = @(1);
+        }
+        NSDictionary *result = @{@"name": property, @"newState": number};
+        self.onPropertyChanged(result);
+    } else if ([property isEqualToString:@"relativeZoom"]) {
+        number = @(number.floatValue * 1000);
+        NSDictionary *result = @{@"name": property, @"newState": number};
+        self.onPropertyChanged(result);
+    } else if ([property isEqualToString:@"switchCamera"]) {
+        NSDictionary *result = @{@"name": property, @"newState": number};
+        self.onPropertyChanged(result);
+    } else if ([property isEqualToString:@"recognitionMode"]) {
+        if (number.unsignedIntegerValue == 4) { // text and barcodes
+            number = @(3);
+        }
+        NSDictionary *result = @{@"name": property, @"newState": number};
+        self.onPropertyChanged(result);
+    }
 }
 
 @end
