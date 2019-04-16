@@ -22,7 +22,7 @@ import java.util.HashSet
 class BarcodePicker(
     val cameraApi: Int = 1
 ) : SimpleViewManager<BarcodePicker>(), OnScanListener, TextRecognitionListener,
-        ProcessFrameListener, WarningsListener {
+        ProcessFrameListener, WarningsListener, PropertyChangeListener {
 
     private var picker: BarcodePicker? = null
     private var didScanLatch: CountDownLatch = CountDownLatch(1)
@@ -98,6 +98,7 @@ class BarcodePicker(
         picker?.setTextRecognitionListener(this)
         picker?.setProcessFrameListener(this)
         picker?.addWarningsListener(this)
+        picker?.setPropertyChangeListener(this)
         return picker as BarcodePicker
     }
 
@@ -108,7 +109,8 @@ class BarcodePicker(
                 "onRecognizeNewCodes", MapBuilder.of("registrationName", "onRecognizeNewCodes"),
                 "onSettingsApplied", MapBuilder.of("registrationName", "onSettingsApplied"),
                 "onTextRecognized", MapBuilder.of("registrationName", "onTextRecognized"),
-                "onWarnings", MapBuilder.of("registrationName", "onWarnings")
+                "onWarnings", MapBuilder.of("registrationName", "onWarnings"),
+                "onPropertyChanged", MapBuilder.of("registrationName", "onPropertyChanged")
         )
     }
 
@@ -188,6 +190,15 @@ class BarcodePicker(
         val context = picker?.context as ReactContext?
         context?.getJSModule(RCTEventEmitter::class.java)?.receiveEvent(picker?.id ?: 0,
                 "onWarnings", warningsToMap(warnings))
+    }
+
+    override fun onPropertyChange(name: Int, newState: Int) {
+        val event = Arguments.createMap()
+        val context = picker?.context as ReactContext?
+        event.putInt("name", name)
+        event.putInt("newState", newState)
+        context?.getJSModule(RCTEventEmitter::class.java)?.receiveEvent(picker?.id ?: 0,
+                "onPropertyChanged", event)
     }
 
     @ReactProp(name = "scanSettings")

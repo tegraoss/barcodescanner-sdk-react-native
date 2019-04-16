@@ -318,12 +318,25 @@ public class Scandit {
     public function onTextRecognized;
 
     /**
-     *  @brief Prop used to set the a warnings callback.
+     *  @brief Prop used to set the warnings callback.
      *
      *  The onWarnings method will be executed after every time a warning is raised
      *  by the frame processing engine.
      */
     public function onWarnings;
+
+    /**
+     *  @brief Prop used to set the property changed callback.
+     *
+     *  The onPropertyChanged method is executed whenever the state of the barcode picker changes.
+     *  Events that can invoke this method include changes to the torch, camera facing, recognition
+     *  mode and relative zoom.
+     *  The onPropertyChanged should accept two arguments of type int. The first one defines
+     *  which property of the BarcodePicker has been changed and its value is one of
+     *  {@link ChangedProperty} enum values. The second one, on the other hand, represents the new
+     *  state of that property.
+     */
+    public function onPropertyChanged;
 
     /**
     * @brief Reconfigure the barcode picker with new settings
@@ -561,6 +574,28 @@ public class Scandit {
        * @brief Not enough contrast warning.
        */
       NOT_ENOUGH_CONTRAST_WARNING
+    }
+
+    public enum ChangedProperty {
+
+      /**
+       * @brief The torch has changed its state.
+       *
+       * New state will be either 0 (torch is unavailable) or 1 (torch is off) or 2 (torch is on).
+       */
+      TORCH,
+      /**
+       * @brief The camera has been switched from front to back-facing, or from back to front-facing.
+       */
+      SWITCH_CAMERA,
+      /**
+       * @brief The recognition mode has been changed.
+       */
+      RECOGNITION_MODE,
+      /**
+       * @brief The relative zoom factor times 1000.
+       */
+      RELATIVE_ZOOM
     }
 
   }
