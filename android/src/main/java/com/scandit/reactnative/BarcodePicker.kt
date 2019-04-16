@@ -195,10 +195,18 @@ class BarcodePicker(
     override fun onPropertyChange(name: Int, newState: Int) {
         val event = Arguments.createMap()
         val context = picker?.context as ReactContext?
-        event.putInt("name", name)
+        event.putString("name", propertyNameFromInt(name))
         event.putInt("newState", newState)
         context?.getJSModule(RCTEventEmitter::class.java)?.receiveEvent(picker?.id ?: 0,
                 "onPropertyChanged", event)
+    }
+
+    private fun propertyNameFromInt(name: Int): String = when (name) {
+        0 -> "torchOn"
+        1 -> "switchCamera"
+        2 -> "recognitionMode"
+        3 -> "relativeZoom"
+        else -> ""
     }
 
     @ReactProp(name = "scanSettings")
