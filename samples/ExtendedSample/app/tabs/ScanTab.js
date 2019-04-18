@@ -287,14 +287,14 @@ export default class ScanScreen extends Component {
   }
 
   stopScanning() {
-    this.setState({
-      isPickerVisible: false,
-      buttonDisabled: false
-    });
     if (this.scanner) {
       this.scanner.stopScanning();
       this.scanner = null
     }
+    this.setState({
+      isPickerVisible: false,
+      buttonDisabled: false
+    });
   }
 
   startScanning() {
