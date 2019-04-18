@@ -182,10 +182,8 @@ class BarcodePicker(
             return
         }
 
-        synchronized(stopped) {
-            // Don't forward the didScan callback to JS layer, as the picker has been already stopped.
-            if (stopped.get()) return
-        }
+        // Don't forward the didScan callback to JS layer, as the picker has been already stopped.
+        if (stopped.get()) return
 
         val context = picker?.context as ReactContext?
 
