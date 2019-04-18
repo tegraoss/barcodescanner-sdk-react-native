@@ -14,9 +14,14 @@ import com.scandit.barcodepicker.ocr.RecognizedText
 import com.scandit.barcodepicker.ocr.TextRecognitionListener
 import com.scandit.recognition.TrackedBarcode
 import java.io.ByteArrayOutputStream
+import java.lang.Thread
 import java.util.ArrayList
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import java.util.HashSet
+
 
 
 class BarcodePicker(
@@ -33,6 +38,8 @@ class BarcodePicker(
     private var shouldPassBarcodeFrame = false
     private val codesToReject = ArrayList<Int>()
     private val idsToReject = ArrayList<String>()
+
+    private val stopped = AtomicBoolean(false)
 
     override fun getName(): String = "BarcodePicker"
 
@@ -64,8 +71,19 @@ class BarcodePicker(
 
     override fun receiveCommand(root: BarcodePicker, commandId: Int, args: ReadableArray?) {
         when (commandId) {
-            COMMAND_START_SCANNING -> root.startScanning()
-            COMMAND_STOP_SCANNING -> root.stopScanning()
+            COMMAND_START_SCANNING -> {
+                stopped.set(false)
+                root.startScanning()
+            }
+            COMMAND_STOP_SCANNING -> {
+                stopped.set(true)
+                // Run stopping of the picker on a non-UI thread, to avoid a deadlock.
+                Thread(object : Runnable {
+                    override fun run() {
+                        root.stopScanning()
+                    }
+                }).start()
+            }
             COMMAND_RESUME_SCANNING -> root.resumeScanning()
             COMMAND_PAUSE_SCANNING -> root.pauseScanning()
             COMMAND_APPLY_SETTINGS -> setScanSettings(args)
@@ -163,7 +181,25 @@ class BarcodePicker(
         if (isMatrixScanEnabled || scanSession == null) {
             return
         }
+
+        synchronized(stopped) {
+            // Don't forward the didScan callback to JS layer, as the picker has been already stopped.
+            if (stopped.get()) return
+        }
+
         val context = picker?.context as ReactContext?
+
+        // Very rarely it can happen that stopScanning is called in the middle of processing
+        // a didScan callback. In that scenario, the JS BarcodePicker (for some inexplicable reason)
+        // is not invoking its onScan method. As a result the engine thread is not released from
+        // the didScanLatch. To prevent this deadlock, we try to release the engine thread in
+        // a delayed runnable below.
+        ScheduledThreadPoolExecutor(1).schedule({
+            synchronized(didScanLatch) {
+                didScanLatch.countDown()
+                didScanLatch = CountDownLatch(1)
+            }
+        }, 400, TimeUnit.MILLISECONDS)
         context?.getJSModule(RCTEventEmitter::class.java)?.receiveEvent(picker?.id ?: 0,
                 "onScan", sessionToMap(scanSession))
         didScanLatch.await()
@@ -260,8 +296,11 @@ class BarcodePicker(
         while (index < array?.size() ?: 0) {
             codesToReject.add(array?.getInt(index++) ?: continue)
         }
-        didScanLatch.countDown()
-        didScanLatch = CountDownLatch(1)
+
+        synchronized(didScanLatch) {
+            didScanLatch.countDown()
+            didScanLatch = CountDownLatch(1)
+        }
     }
 
     private fun finishDidProcessCallback(args: ReadableArray?) {
